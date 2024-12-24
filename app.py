@@ -1,19 +1,36 @@
 import streamlit as st
 import pandas as pd
-from ux import render_ui
 import altair as alt
 
+# Import UI/UX elements from ux.py
+from ux import render_ui
+
 def main():
-    # Set page config
+    # Configure the Streamlit page
     st.set_page_config(
         page_title="Lego Dataset Dashboard",
+        page_icon="logo.jpeg",  # Optionally use the logo as the browser tab icon
         layout="wide",
         initial_sidebar_state="expanded"
     )
 
-    st.title("Lego Dataset Visualization")
+    # Add a header with logo and link to amas.com
+    # Using HTML/CSS to align logo and title horizontally
+    st.markdown(
+        """
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="logo.jpeg" alt="Logo" style="height: 60px;">
+            <h2 style="margin-bottom: 0;">Lego Dataset Visualization</h2>
+        </div>
+        <p style="margin-top: 0;">
+            Brought to you by <a href="https://amas.com" target="_blank">amas.com</a>
+        </p>
+        <hr style="margin: 1rem 0;">
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Load dataset
+    # Load the dataset
     df = pd.read_csv("lego.csv")
 
     # -------------------------
@@ -43,12 +60,12 @@ def main():
         (df["Block Color"].isin(block_colors))
     ]
 
-    # Grouped data for charts
+    # Group data for charts
     grouped_data = filtered_df.groupby(
         ["Block Type", "Block Color"], as_index=False
     )[["Available Quantity", "Sold Out"]].sum()
 
-    # Render the UI components
+    # Render the rest of the UI (from ux.py)
     render_ui(df, filtered_df, grouped_data)
 
 if __name__ == "__main__":
