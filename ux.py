@@ -2,15 +2,11 @@ import streamlit as st
 import altair as alt
 
 def render_ui(df, filtered_df, grouped_data):
-    # -------------------------
-    # Collapsible Section: Raw Data
-    # -------------------------
+    # Raw Data (collapsible)
     with st.expander("Raw Data", expanded=False):
         st.dataframe(df.style.highlight_max(axis=0), use_container_width=True)
 
-    # -------------------------
     # Key Metrics
-    # -------------------------
     st.subheader("Key Metrics")
     total_available = int(filtered_df["Available Quantity"].sum())
     total_sold_out = int(filtered_df["Sold Out"].sum())
@@ -23,15 +19,11 @@ def render_ui(df, filtered_df, grouped_data):
     col3.metric("Block Types (Filtered)", unique_types)
     col4.metric("Block Colors (Filtered)", unique_colors)
 
-    # -------------------------
-    # Collapsible Section: Filtered Data
-    # -------------------------
+    # Filtered Data (collapsible)
     with st.expander("Filtered Data", expanded=True):
         st.dataframe(filtered_df.style.highlight_max(axis=0), use_container_width=True)
 
-    # -------------------------
-    # Tabs for Charts
-    # -------------------------
+    # Tabs for charts
     tab1, tab2 = st.tabs(["Available Quantity", "Sold Out"])
 
     with tab1:
@@ -76,9 +68,6 @@ def render_ui(df, filtered_df, grouped_data):
         )
         st.altair_chart(sold_out_chart, use_container_width=True)
 
-    # -------------------------
-    # Additional Notes
-    # -------------------------
     st.write(
         """
         ---
