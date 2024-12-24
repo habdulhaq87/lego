@@ -100,3 +100,4 @@ Tile,Rectangular,1x1,White,45,32
 Tile,Square,2x4,Yellow,5,1
 Plate,Rectangular,1x2,Black,3,1
 Brick,Rectangular,1x1,Black,0,0
+Brick,Rectangular,2x3,Black,5,3
