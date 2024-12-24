@@ -19,7 +19,7 @@ def main():
     st.title("Lego Dataset Visualization")
 
     # Display the logo and website link in the sidebar
-    st.sidebar.image("logo.jpg", use_column_width=True)
+    st.sidebar.image("logo.jpg", use_container_width=True)  # use_container_width instead of use_column_width
     st.sidebar.markdown("[amas.com](https://amas.com)")
 
     # -- Load the dataset once at startup --
@@ -88,21 +88,21 @@ def main():
             # Read the current CSV into a DataFrame (again) to ensure consistency
             current_df = pd.read_csv("lego.csv")
 
-            # Create a new row as a dictionary
-            new_row = {
-                "Block Type": block_type,
-                "Block Shape": block_shape,
-                "Dimensions": dimension,
-                "Block Color": block_color,
-                "Available Quantity": int(available_quantity),
-                "Sold Out": int(sold_out),
-            }
+            # Create a new row as a DataFrame
+            new_row = pd.DataFrame({
+                "Block Type": [block_type],
+                "Block Shape": [block_shape],
+                "Dimensions": [dimension],
+                "Block Color": [block_color],
+                "Available Quantity": [int(available_quantity)],
+                "Sold Out": [int(sold_out)],
+            })
 
-            # Append the new row to the DataFrame
-            current_df = current_df.append(new_row, ignore_index=True)
+            # Use pd.concat to append the new row
+            updated_df = pd.concat([current_df, new_row], ignore_index=True)
 
             # Write updated data back to CSV
-            current_df.to_csv("lego.csv", index=False)
+            updated_df.to_csv("lego.csv", index=False)
 
             st.success("New data added successfully!")
             st.balloons()  # Fun effect
