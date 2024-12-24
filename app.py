@@ -73,39 +73,39 @@ def main():
     with tab_data_entry:
         st.subheader("Add New Data to lego.csv")
 
-        # Input fields for new data
-        block_type = st.text_input("Block Type")
-        block_shape = st.text_input("Block Shape")
-        dimension = st.text_input("Dimensions")
-        block_color = st.text_input("Block Color")
+        # Use selectbox to choose from existing CSV values
+        block_type = st.selectbox("Block Type", sorted(df["Block Type"].unique()))
+        block_shape = st.selectbox("Block Shape", sorted(df["Block Shape"].unique()))
+        dimension = st.selectbox("Dimensions", sorted(df["Dimensions"].unique()))
+        block_color = st.selectbox("Block Color", sorted(df["Block Color"].unique()))
+
+        # Number inputs for quantity fields
         available_quantity = st.number_input("Available Quantity", min_value=0, step=1)
         sold_out = st.number_input("Sold Out", min_value=0, step=1)
 
         # Button to add row to CSV
         if st.button("Add Row"):
-            if block_type and block_shape and dimension and block_color:
-                # Read the current CSV into a DataFrame
-                current_df = pd.read_csv("lego.csv")
+            # Read the current CSV into a DataFrame (again) to ensure consistency
+            current_df = pd.read_csv("lego.csv")
 
-                # Create a new row as a dictionary
-                new_row = {
-                    "Block Type": block_type,
-                    "Block Shape": block_shape,
-                    "Dimensions": dimension,
-                    "Block Color": block_color,
-                    "Available Quantity": int(available_quantity),
-                    "Sold Out": int(sold_out),
-                }
+            # Create a new row as a dictionary
+            new_row = {
+                "Block Type": block_type,
+                "Block Shape": block_shape,
+                "Dimensions": dimension,
+                "Block Color": block_color,
+                "Available Quantity": int(available_quantity),
+                "Sold Out": int(sold_out),
+            }
 
-                # Append the new row to the DataFrame
-                current_df = current_df.append(new_row, ignore_index=True)
+            # Append the new row to the DataFrame
+            current_df = current_df.append(new_row, ignore_index=True)
 
-                # Write updated data back to CSV
-                current_df.to_csv("lego.csv", index=False)
+            # Write updated data back to CSV
+            current_df.to_csv("lego.csv", index=False)
 
-                st.success("New data added successfully!")
-            else:
-                st.error("Please fill in all required fields to add new data.")
+            st.success("New data added successfully!")
+            st.balloons()  # Fun effect
 
 if __name__ == "__main__":
     main()
