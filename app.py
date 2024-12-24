@@ -1,34 +1,24 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-
-# Import UI/UX elements from ux.py
-from ux import render_ui
+from ux import render_ui  # Import your custom UX components
 
 def main():
-    # Configure the Streamlit page
+    # Set page configuration (including the logo as favicon)
     st.set_page_config(
         page_title="Lego Dataset Dashboard",
-        page_icon="logo.jpeg",  # Optionally use the logo as the browser tab icon
+        page_icon="logo.jpg",  # This will be used as the favicon
         layout="wide",
         initial_sidebar_state="expanded"
     )
 
-    # Add a header with logo and link to amas.com
-    # Using HTML/CSS to align logo and title horizontally
-    st.markdown(
-        """
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <img src="logo.jpeg" alt="Logo" style="height: 60px;">
-            <h2 style="margin-bottom: 0;">Lego Dataset Visualization</h2>
-        </div>
-        <p style="margin-top: 0;">
-            Brought to you by <a href="https://amas.com" target="_blank">amas.com</a>
-        </p>
-        <hr style="margin: 1rem 0;">
-        """,
-        unsafe_allow_html=True
-    )
+    # Display the logo at the top of the main page
+    st.image("logo.jpg", width=80)
+    st.title("Lego Dataset Visualization")
+
+    # Display the logo and website link in the sidebar
+    st.sidebar.image("logo.jpg", use_column_width=True)
+    st.sidebar.markdown("[amas.com](https://amas.com)")
 
     # Load the dataset
     df = pd.read_csv("lego.csv")
@@ -53,7 +43,7 @@ def main():
         default=df["Block Color"].unique()
     )
 
-    # Filter the data
+    # Filtered DataFrame
     filtered_df = df[
         (df["Block Type"].isin(block_types)) &
         (df["Block Shape"].isin(block_shapes)) &
@@ -65,7 +55,7 @@ def main():
         ["Block Type", "Block Color"], as_index=False
     )[["Available Quantity", "Sold Out"]].sum()
 
-    # Render the rest of the UI (from ux.py)
+    # Call the UX rendering function
     render_ui(df, filtered_df, grouped_data)
 
 if __name__ == "__main__":
